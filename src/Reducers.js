@@ -17,7 +17,6 @@ const lookAtPosition = (state, position) => {
     return IS_VOID;
   }
   const location = state.tiles[position.y * state.width + position.x];
-  console.log('Checking location', location, 'at position', position);
   // WALL CHECK
   const isWall = WALL_NUMS.includes(location);
   if (isWall) return IS_WALL;
@@ -32,7 +31,10 @@ const lookAtPosition = (state, position) => {
 
 const moveReducer = (oldState, action) => {
   let state = {...oldState};
-  console.log(state);
+  if (state.player.health <= 0) {
+    console.log(`You're dead`);
+    return state;
+  }
 
   let newPos = { x: state.player.position.x, y: state.player.position.y };
   switch (action.type) {
@@ -44,25 +46,39 @@ const moveReducer = (oldState, action) => {
       break;
     case MOVE_RIGHT: newPos.x++;
       break;
+    default:
   }
   const positionInfo = lookAtPosition(state, newPos);
-  console.log('Got location info:', positionInfo);
   switch (positionInfo) {
     case IS_WALL:
-      return state;
+      break;
     case IS_ENEMY:
-      state.entities
-        .find(obj => obj.position.x === newPos.x && obj.position.y === newPos.y)
-        .health -= getDamage().damage;
-      state.player.health -= getDamage().damage;
-      return state;
+      const damageToEnemy = getDamage();
+      const damageToPlayer = getDamage(2);
+      const enemy = state.entities
+        .find(obj => obj.position.x === newPos.x && obj.position.y === newPos.y);
+      const indexOfEnemy = state.entities.indexOf(enemy);
+
+      enemy.health -= damageToEnemy.damage;
+      if (enemy.health <= 0) {
+        state.entities.splice(indexOfEnemy, 1);
+      } else {
+        state.entities[indexOfEnemy] = enemy;
+      }
+      state.player.health -= damageToPlayer.damage;
+      if (state.player.health <= 0) {
+        console.log(`You're dead`);
+      }
+
+      break;
     case IS_EMPTY:
       state.player.position = newPos;
-      return state;
+      break;
     case IS_VOID:
     default:
-      return state;
   }
+
+  return state;
 };
 
 const getDamage = (reduction) => {
@@ -73,8 +89,9 @@ const getDamage = (reduction) => {
   const isCrit = Math.random() > 0.75;
   damage += getRandomInt(20);
   if (isCrit) damage *= 2;
-  if (reduction) damage -= reduction;
+  if (reduction) damage /= reduction;
   if (damage < 0) damage = 0;
+  damage = Math.round(damage);
 
   return { damage, isCrit };
 };
