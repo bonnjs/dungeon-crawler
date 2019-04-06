@@ -57,13 +57,13 @@ const moveReducer = (oldState, action) => {
       newPos.y -= 1;
       break;
     case MOVE_DOWN:
-      newPos.y -= 1;
+      newPos.y += 1;
       break;
     case MOVE_LEFT:
       newPos.x -= 1;
       break;
     case MOVE_RIGHT:
-      newPos.x -= 1;
+      newPos.x += 1;
       break;
     default:
   }
