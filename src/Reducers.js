@@ -1,10 +1,21 @@
 const WALL_NUMS = [ 1 ];
 
+const MOVE_UP = 'MOVE_UP';
+const MOVE_DOWN = 'MOVE_DOWN';
+const MOVE_LEFT = 'MOVE_LEFT';
+const MOVE_RIGHT = 'MOVE_RIGHT';
+
 const IS_WALL = 'IS_WALL';
 const IS_ENEMY = 'IS_ENEMY';
 const IS_EMPTY = 'IS_EMPTY';
+const IS_VOID = 'IS_VOID';
 
 const lookAtPosition = (state, position) => {
+  const mapWidth = state.width;
+  const mapHeight = state.tiles / state.width;
+  if (position.y < 0 || position.y > mapHeight || position.x < 0 || position.x > mapWidth) {
+    return IS_VOID;
+  }
   const location = state.tiles[position.y * state.width + position.x];
   console.log('Checking location', location, 'at position', position);
   // WALL CHECK
@@ -41,6 +52,7 @@ const moveReducer = (state, action) => {
     case IS_EMPTY:
       state.player.position = newPos;
       return state;
+    case IS_VOID:
     default:
       return state;
   }
@@ -60,3 +72,4 @@ const getDamage = (reduction) => {
   return { damage, isCrit };
 };
 
+export default moveReducer;
