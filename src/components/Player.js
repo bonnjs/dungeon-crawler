@@ -1,9 +1,16 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import useStoreState from '../hooks/useStoreState';
 import useDispatch from '../hooks/useDispatch';
 import { MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN } from '../Reducers';
+import DungeonTileset from '../DungeonTileset.png';
 
-// const player = { position: { x: 2, y: 1 }, health: 100 };
+const PlayerTile = styled.div`
+  background-image: url(${DungeonTileset});
+  background-position: -128px -16px;
+  grid-column: ${({ position }) => position.x + 1} / span 1;
+  grid-row: ${({ position }) => position.y + 1} / span 1;
+`;
 
 function Player() {
   const { player } = useStoreState();
@@ -31,15 +38,16 @@ function Player() {
     });
   }, []);
 
-  const style = {
-    position: 'absolute',
-    height: 16,
-    width: 16,
-    left: player.position.x * 16,
-    top: player.position.y * 16,
-    background: 'blue',
-  };
-  return <div style={style} />;
+  // const style = {
+  //   position: 'absolute',
+  //   height: 16,
+  //   width: 16,
+  //   left: player.position.x * 16,
+  //   top: player.position.y * 16,
+  //   background: 'blue',
+  // };
+  // return <div style={style} />;
+  return <PlayerTile position={player.position} />;
 }
 
 export default Player;

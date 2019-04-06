@@ -1,35 +1,46 @@
 import React from 'react';
+import styled from 'styled-components';
 import useStoreState from '../hooks/useStoreState';
+import Player from './Player';
+import DungeonTileset from '../DungeonTileset.png';
 
-// prettier-ignore
-// const tiles = [
-// 	0, 1, 1, 1, 1, 0, 0, 0, 0,
-// 	0, 1, 0, 0, 1, 0, 0, 0, 0,
-// 	0, 1, 0, 0, 1, 0, 0, 0, 0,
-// 	0, 1, 1, 1, 1, 0, 0, 0, 0
-// ];
-// const width = 9;
+function indexToPosition({ index, width }) {
+  return {
+    x: index % width,
+    y: Math.floor(index / width),
+  };
+}
+
+const TileGrid = styled.div`
+  display: inline-grid;
+  grid-template-columns: repeat(${props => props.width}, 16px);
+  grid-template-rows: repeat(${props => props.height}, 16px);
+  align-items: stretch;
+  justify-items: stretch;
+  background-color: lightgreen;
+`;
+
+const Tile = styled.div`
+  background-image: url(${DungeonTileset});
+  background-position: -16px -${props => (props.type === 1 ? 16 : 64)}px;
+  grid-column: ${({ position }) => position.x + 1} / span 1;
+  grid-row: ${({ position }) => position.y + 1} / span 1;
+`;
 
 function Map() {
-	const { tiles, width } = useStoreState();
-	const height = tiles.length / width;
+  const { tiles, width } = useStoreState();
+  const height = tiles.length / width;
 
-	const output = [];
-	for (let y = 0; y < height; y += 1) {
-		for (let x = 0; x < width; x += 1) {
-			const index = y * width + x;
-			const style = {
-				position: "absolute",
-				height: 16,
-				width: 16,
-				left: x * 16,
-				top: y * 16,
-				background: tiles[index] ? "black" : "lightgreen"
-			};
-			output.push(<div key={index} style={style} />);
-		}
-	}
-	return <>{output}</>;
+  return (
+    <TileGrid width={width} height={height}>
+      {tiles.map(
+        (tile, index) =>
+          // eslint-disable-next-line react/no-array-index-key
+          !!tile && <Tile key={index} type={tile} position={indexToPosition({ index, width })} />,
+      )}
+      <Player />
+    </TileGrid>
+  );
 }
 
 export default Map;
