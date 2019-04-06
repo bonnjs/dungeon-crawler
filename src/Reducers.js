@@ -30,14 +30,33 @@ const moveReducer = (state, action) => {
   const positionInfo = lookAtPosition(state, newPos);
   console.log('Got location info:', positionInfo);
   switch (positionInfo) {
-    IS_WALL:
+    case IS_WALL:
       return state;
-    IS_ENEMY:
+    case IS_ENEMY:
+      state.entities
+        .find(obj => obj.position.x === newPos.x && obj.position.y === newPos.y)
+        .health -= getDamage();
+      state.player.health -= getDamage();
       return state;
-    IS_EMPTY:
+    case IS_EMPTY:
       state.player.position = newPos;
       return state;
     default:
       return state;
   }
-}
+};
+
+const getDamage = (reduction) => {
+  const getRandomInt(max) =>
+    Math.floor(Math.random() * Math.floor(max));
+
+  let damage = 0;
+  const isCrit = Math.random() > 0.75;
+  damage += getRandomInt(20);
+  if (isCrit) damage *= 2;
+  if (reduction) damage -= reduction;
+  if (damage < 0) damage = 0;
+
+  return { damage, isCrit };
+};
+
