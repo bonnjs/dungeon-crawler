@@ -12,8 +12,8 @@ const IS_VOID = 'IS_VOID';
 
 const lookAtPosition = (state, position) => {
   const mapWidth = state.width;
-  const mapHeight = state.tiles / state.width;
-  if (position.y < 0 || position.y > mapHeight || position.x < 0 || position.x > mapWidth) {
+  const mapHeight = state.tiles.length / state.width;
+  if (position.y < 0 || position.y >= mapHeight || position.x < 0 || position.x >= mapWidth) {
     return IS_VOID;
   }
   const location = state.tiles[position.y * state.width + position.x];
