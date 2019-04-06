@@ -30,7 +30,8 @@ const lookAtPosition = (state, position) => {
   return IS_EMPTY;
 };
 
-const moveReducer = (state, action) => {
+const moveReducer = (oldState, action) => {
+  let state = {...oldState};
   console.log(state);
 
   let newPos = { x: state.player.position.x, y: state.player.position.y };
