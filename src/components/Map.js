@@ -1,5 +1,5 @@
-import React from "react";
-import useStoreState from "../hooks/useStoreState.js";
+import React from 'react';
+import useStoreState from '../hooks/useStoreState';
 
 // prettier-ignore
 // const tiles = [
@@ -14,11 +14,9 @@ function Map() {
 	const { tiles, width } = useStoreState();
 	const height = tiles.length / width;
 
-	console.log('map render');
-
 	const output = [];
-	for (let y = 0; y < height; y++) {
-		for (let x = 0; x < width; x++) {
+	for (let y = 0; y < height; y += 1) {
+		for (let x = 0; x < width; x += 1) {
 			const index = y * width + x;
 			const style = {
 				position: "absolute",

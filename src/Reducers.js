@@ -1,4 +1,4 @@
-const WALL_NUMS = [ 1 ];
+const WALL_NUMS = [1];
 
 export const MOVE_UP = 'MOVE_UP';
 export const MOVE_DOWN = 'MOVE_DOWN';
@@ -21,30 +21,49 @@ const lookAtPosition = (state, position) => {
   const isWall = WALL_NUMS.includes(location);
   if (isWall) return IS_WALL;
   // ENEMY CHECK
-  const enemyAtLocation = state.entities
-  .find(obj => obj.position.x === position.x && obj.position.y === position.y);
+  const enemyAtLocation = state.entities.find(
+    obj => obj.position.x === position.x && obj.position.y === position.y,
+  );
   const isEnemy = enemyAtLocation !== undefined;
   if (isEnemy) return IS_ENEMY;
   // DEFAULT
   return IS_EMPTY;
 };
 
+const getDamage = reduction => {
+  const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));
+
+  let damage = 0;
+  const isCrit = Math.random() > 0.75;
+  damage += getRandomInt(20);
+  if (isCrit) damage *= 2;
+  if (reduction) damage /= reduction;
+  if (damage < 0) damage = 0;
+  damage = Math.round(damage);
+
+  return { damage, isCrit };
+};
+
 const moveReducer = (oldState, action) => {
-  let state = {...oldState};
+  const state = { ...oldState };
   if (state.player.health <= 0) {
     console.log(`You're dead`);
     return state;
   }
 
-  let newPos = { x: state.player.position.x, y: state.player.position.y };
+  const newPos = { x: state.player.position.x, y: state.player.position.y };
   switch (action.type) {
-    case MOVE_UP: newPos.y--;
+    case MOVE_UP:
+      newPos.y -= 1;
       break;
-    case MOVE_DOWN: newPos.y++;
+    case MOVE_DOWN:
+      newPos.y -= 1;
       break;
-    case MOVE_LEFT: newPos.x--;
+    case MOVE_LEFT:
+      newPos.x -= 1;
       break;
-    case MOVE_RIGHT: newPos.x++;
+    case MOVE_RIGHT:
+      newPos.x -= 1;
       break;
     default:
   }
@@ -52,11 +71,12 @@ const moveReducer = (oldState, action) => {
   switch (positionInfo) {
     case IS_WALL:
       break;
-    case IS_ENEMY:
+    case IS_ENEMY: {
       const damageToEnemy = getDamage();
       const damageToPlayer = getDamage(2);
-      const enemy = state.entities
-        .find(obj => obj.position.x === newPos.x && obj.position.y === newPos.y);
+      const enemy = state.entities.find(
+        obj => obj.position.x === newPos.x && obj.position.y === newPos.y,
+      );
       const indexOfEnemy = state.entities.indexOf(enemy);
 
       enemy.health -= damageToEnemy.damage;
@@ -71,6 +91,7 @@ const moveReducer = (oldState, action) => {
       }
 
       break;
+    }
     case IS_EMPTY:
       state.player.position = newPos;
       break;
@@ -79,21 +100,6 @@ const moveReducer = (oldState, action) => {
   }
 
   return state;
-};
-
-const getDamage = (reduction) => {
-  const getRandomInt = (max) =>
-    Math.floor(Math.random() * Math.floor(max));
-
-  let damage = 0;
-  const isCrit = Math.random() > 0.75;
-  damage += getRandomInt(20);
-  if (isCrit) damage *= 2;
-  if (reduction) damage /= reduction;
-  if (damage < 0) damage = 0;
-  damage = Math.round(damage);
-
-  return { damage, isCrit };
 };
 
 export default moveReducer;
