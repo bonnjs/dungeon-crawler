@@ -37,9 +37,13 @@ const moveReducer = (oldState, action) => {
   let newPos = { x: state.player.position.x, y: state.player.position.y };
   switch (action.type) {
     case MOVE_UP: newPos.y--;
+      break;
     case MOVE_DOWN: newPos.y++;
+      break;
     case MOVE_LEFT: newPos.x--;
+      break;
     case MOVE_RIGHT: newPos.x++;
+      break;
   }
   const positionInfo = lookAtPosition(state, newPos);
   console.log('Got location info:', positionInfo);
@@ -49,8 +53,8 @@ const moveReducer = (oldState, action) => {
     case IS_ENEMY:
       state.entities
         .find(obj => obj.position.x === newPos.x && obj.position.y === newPos.y)
-        .health -= getDamage();
-      state.player.health -= getDamage();
+        .health -= getDamage().damage;
+      state.player.health -= getDamage().damage;
       return state;
     case IS_EMPTY:
       state.player.position = newPos;
