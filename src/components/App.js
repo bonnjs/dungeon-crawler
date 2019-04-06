@@ -1,8 +1,8 @@
 import React from 'react';
-import './App.css';
-import StoreProvider from './StoreProvider';
-import Player from './components/Player';
-import Map from './components/Map';
+// import './App.css';
+import StoreProvider from '../StoreProvider';
+import Player from './Player';
+import Map from './Map';
 
 function App() {
   return (
