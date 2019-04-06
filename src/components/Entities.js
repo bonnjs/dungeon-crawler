@@ -4,7 +4,7 @@ import useStoreState from "../hooks/useStoreState";
 function Entities() {
 	const { entities } = useStoreState();
 
-	const result = entities.map((ent, index) => {
+	const entitiesEl = entities.map((ent, index) => {
 		const style = {
 			position: "absolute",
 			height: 16,
@@ -13,10 +13,10 @@ function Entities() {
 			top: ent.position.y * 16,
 			background: "red"
 		};
-		return <div style={style} />;
+		return <div key={index} style={style} />;
 	})
 
-	return <>{result}</>;
+	return <>{entitiesEl}</>;
 }
 
 export default Entities;
