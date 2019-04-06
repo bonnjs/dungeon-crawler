@@ -2,18 +2,20 @@ import React from "react";
 import useStoreState from "../hooks/useStoreState.js";
 
 // prettier-ignore
-const tiles = [
-	0, 1, 1, 1, 1, 0, 0, 0, 0,
-	0, 1, 0, 0, 1, 0, 0, 0, 0,
-	0, 1, 0, 0, 1, 0, 0, 0, 0,
-	0, 1, 1, 1, 1, 0, 0, 0, 0
-];
-const width = 9;
-const height = tiles.length / width;
+// const tiles = [
+// 	0, 1, 1, 1, 1, 0, 0, 0, 0,
+// 	0, 1, 0, 0, 1, 0, 0, 0, 0,
+// 	0, 1, 0, 0, 1, 0, 0, 0, 0,
+// 	0, 1, 1, 1, 1, 0, 0, 0, 0
+// ];
+// const width = 9;
 
 function Map() {
-	const state = useStoreState();
-	console.log(state);
+	const { tiles, width } = useStoreState();
+	const height = tiles.length / width;
+
+	console.log('map render');
+
 	const output = [];
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {

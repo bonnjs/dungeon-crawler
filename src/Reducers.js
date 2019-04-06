@@ -1,9 +1,9 @@
 const WALL_NUMS = [ 1 ];
 
-const MOVE_UP = 'MOVE_UP';
-const MOVE_DOWN = 'MOVE_DOWN';
-const MOVE_LEFT = 'MOVE_LEFT';
-const MOVE_RIGHT = 'MOVE_RIGHT';
+export const MOVE_UP = 'MOVE_UP';
+export const MOVE_DOWN = 'MOVE_DOWN';
+export const MOVE_LEFT = 'MOVE_LEFT';
+export const MOVE_RIGHT = 'MOVE_RIGHT';
 
 const IS_WALL = 'IS_WALL';
 const IS_ENEMY = 'IS_ENEMY';
@@ -31,7 +31,9 @@ const lookAtPosition = (state, position) => {
 };
 
 const moveReducer = (state, action) => {
-  let newPos = { x: state.player.x, y: state.player.y };
+  console.log(state);
+
+  let newPos = { x: state.player.position.x, y: state.player.position.y };
   switch (action.type) {
     case MOVE_UP: newPos.y--;
     case MOVE_DOWN: newPos.y++;

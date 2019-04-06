@@ -29,6 +29,8 @@ function StoreProvider({ children }) {
     },
   )
 
+  console.log('provider render')
+
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
