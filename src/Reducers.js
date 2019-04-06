@@ -47,7 +47,7 @@ const moveReducer = (state, action) => {
 };
 
 const getDamage = (reduction) => {
-  const getRandomInt(max) =>
+  const getRandomInt = (max) =>
     Math.floor(Math.random() * Math.floor(max));
 
   let damage = 0;
